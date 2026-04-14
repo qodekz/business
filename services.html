@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Qodekz | Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00f2ff; --bg: #05070a; }
+        body { background: var(--bg); color: white; font-family: 'Montserrat'; padding: 40px; }
+        .back { color: var(--neon); text-decoration: none; font-family: 'Orbitron'; font-size: 0.8rem; }
+        .card { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(0,242,255,0.1); 
+            padding: 25px; 
+            border-radius: 20px; 
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0,242,255,0.1); }
+        .order-btn {
+            background: var(--neon);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Orbitron';
+            font-size: 0.7rem;
+            border: none;
+            cursor: pointer;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back">← RETURN TO CORE</a>
+    <h1 style="font-family: 'Orbitron'; color: var(--neon);">SYSTEM SERVICES</h1>
+
+    <div class="card">
+        <h3>WEB DEVELOPMENT <span style="color: var(--neon);">[PRO]</span></h3>
+        <p>Күрделілігі жоғары веб-сайттар мен CRM жүйелерді нөлден бастап құру.</p>
+        <button class="order-btn" onclick="location.href='contact.html'">ORDER NOW</button>
+    </div>
+
+    <div class="card">
+        <h3>AI BOT ARCHITECTURE</h3>
+        <p>Бизнес процестерді автоматтандыратын ақылды Телеграм боттар.</p>
+        <button class="order-btn" onclick="location.href='contact.html'">ORDER NOW</button>
+    </div>
+</body>
+</html>
+

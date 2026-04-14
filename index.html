@@ -3,205 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QODEKZ | Enterprise Digital Solutions</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;500&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>QODEKZ | Secure Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* === PROFESSIONAL CSS VARIABLES === */
         :root {
-            --neon-blue: #00f2ff;
-            --neon-purple: #bc13fe;
-            --dark-deep: #05070a;
+            --neon: #00f2ff;
+            --bg: #05070a;
             --glass: rgba(255, 255, 255, 0.03);
-            --border-glow: rgba(0, 242, 255, 0.3);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* === GLOBAL STYLES === */
-        body, html {
-            margin: 0; padding: 0;
-            background-color: var(--dark-deep);
-            color: #e0e0e0;
+        body {
+            background-color: var(--bg);
+            color: white;
             font-family: 'Montserrat', sans-serif;
-            scroll-behavior: smooth;
+            margin: 0;
             overflow-x: hidden;
         }
 
-        /* === PRELOADER (Хакерлік стиль) === */
-        #loader {
+        /* Кәсіби Auth панелі */
+        .auth-bar {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Roboto Mono', monospace;
-        }
-        .matrix-text { color: var(--neon-blue); font-size: 1rem; margin-top: 20px; }
-
-        /* === BACKGROUND ANIMATION === */
-        .bg-vibe {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #101825 0%, #05070a 100%);
-            z-index: -1;
-        }
-
-        /* === HEADER & LOGO === */
-        header {
-            padding: 60px 20px;
-            text-align: center;
-            background: linear-gradient(to bottom, rgba(0, 242, 255, 0.05), transparent);
-        }
-        .glitch-wrapper { position: relative; display: inline-block; }
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            color: white;
-            text-shadow: 0 0 20px var(--neon-blue);
-            margin: 0;
-        }
-
-        /* === MAIN CONTAINER === */
-        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-
-        .section-header {
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
             display: flex;
             align-items: center;
-            margin: 40px 0 20px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: var(--neon-blue);
-            text-transform: uppercase;
-        }
-        .section-header::after {
-            content: ""; height: 1px; flex-grow: 1;
-            background: linear-gradient(to right, var(--neon-blue), transparent);
-            margin-left: 15px;
-        }
-
-        /* === ADVANCED CARDS === */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
-
-        .btn-card {
+            gap: 15px;
             background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            padding: 8px 15px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
         }
-        .btn-card::before {
-            content: ""; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-        .btn-card:hover::before { left: 100%; }
-        .btn-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.15);
-            background: rgba(0, 242, 255, 0.02);
-        }
-        .btn-card b { font-size: 1.1rem; margin-bottom: 5px; color: var(--neon-blue); }
-        .btn-card span { font-size: 0.8rem; opacity: 0.6; }
 
-        /* === ABOUT BOX === */
-        .about-section {
-            background: var(--glass);
+        .user-photo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--neon);
+            display: none;
+        }
+
+        .btn-auth {
+            background: none;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 8px 20px;
             border-radius: 20px;
-            padding: 35px;
-            border: 1px solid rgba(255,255,255,0.05);
-            line-height: 1.8;
-            position: relative;
-        }
-        .about-section::after {
-            content: "CYBERSEC OK"; position: absolute; top: 10px; right: 20px;
-            font-size: 0.6rem; color: #00ff88; font-family: 'Roboto Mono';
+            cursor: pointer;
+            font-family: 'Orbitron';
+            font-size: 0.7rem;
+            transition: 0.3s;
         }
 
-        /* === MODAL BOT === */
-        #bot-modal {
-            display: none; position: fixed; bottom: 20px; right: 20px;
-            width: 300px; background: #121820; border: 1px solid var(--neon-blue);
-            border-radius: 15px; box-shadow: 0 0 30px black; z-index: 1000;
+        .btn-auth:hover {
+            background: var(--neon);
+            color: black;
+            box-shadow: 0 0 15px var(--neon);
         }
-        .bot-header { padding: 10px; background: var(--neon-blue); color: black; font-weight: bold; border-radius: 13px 13px 0 0; }
-        .bot-body { padding: 15px; height: 200px; overflow-y: auto; font-size: 0.9rem; }
+
+        /* Хат жіберу формасының жаңа дизайны */
+        .contact-section {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--glass);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--neon); }
+
+        .btn-send {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #00f2ff, #0072ff);
+            border: none;
+            color: black;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="logo" style="font-size: 2rem;">QODEKZ</div>
-        <div class="matrix-text" id="status-text">INITIALIZING SYSTEMS...</div>
+    <div class="auth-bar" id="auth-panel">
+        <img id="user-img" class="user-photo" src="" alt="User">
+        <span id="user-name" style="font-size: 0.8rem; display: none;"></span>
+        <button class="btn-auth" id="login-btn" onclick="signInWithGoogle()">LOG IN</button>
+        <button class="btn-auth" id="logout-btn" style="display: none;" onclick="signOutUser()">EXIT</button>
     </div>
 
-    <div class="bg-vibe"></div>
-
-    <header>
-        <div class="glitch-wrapper">
-            <h1 class="logo">QODEKZ</h1>
-        </div>
-        <p style="font-family: 'Roboto Mono'; font-size: 0.8rem; letter-spacing: 3px;">[ DIGITAL EVOLUTION UNIT ]</p>
-    </header>
-
-    <div class="container">
+    <div class="contact-section">
+        <h2 style="font-family: 'Orbitron'; color: var(--neon);">SECURE MESSAGE</h2>
+        <p id="auth-status" style="font-size: 0.8rem; color: #ff4444;">Жүйеге кіріңіз...</p>
         
-        <div class="section-header">Негізгі қызметтер</div>
-        <div class="grid">
-            <a href="#" class="btn-card"><b>Сайт жасау</b><span>Web-платформалар мен Landing Page</span></a>
-            <a href="#" class="btn-card"><b>Телеграм бот</b><span>AI негізіндегі автоматтандыру</span></a>
-            <a href="#" class="btn-card"><b>Қолданбалар</b><span>Android / iOS шешімдері</span></a>
-            <a href="#" class="btn-card"><b>Инвестиция</b><span>Болашақ жобаларға серіктес болу</span></a>
-        </div>
-
-        <div class="section-header">Байланыс орталығы</div>
-        <div class="grid">
-            <a href="#" class="btn-card"><b>Админге хат</b><span>Ұсыныстар мен кемшіліктер</span></a>
-            <a href="javascript:void(0)" onclick="toggleBot()" class="btn-card" style="border-color: var(--neon-purple);"><b>AI Көмекші</b><span>Ақылды боттан кеңес алу</span></a>
-        </div>
-
-        <div class="section-header">Студия туралы</div>
-        <div class="about-section">
-            <p><b>QODEKZ Studio</b> — бұл инновациялық цифрлық шешімдер мен веб-технологияларды дамытуға бағытталған болашақ студиясы. Біз тек код жазбаймыз, біз бизнестің цифрлық "фундаментін" қалаймыз.</p>
-            <p>Біздің мақсатымыз — заманауи құралдар арқылы бизнесті автоматтандыру және тиімді онлайн платформалар құру. Жақын арада техникалық базамызды (High-Performance Hardware) кеңейтіп, сапалы жаңа деңгейге шығуды жоспарлап отырмыз.</p>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <span style="color: #00ff88;">● 24/7 ONLINE</span>
-                <span style="color: var(--neon-blue);">● HIGH-SECURITY</span>
-            </div>
-        </div>
+        <form id="contact-form">
+            <input type="text" id="msg-subject" placeholder="Тақырып (мысалы: Инвестиция)" required>
+            <textarea id="msg-body" placeholder="Сұрағыңызды қалдырыңыз..." rows="5" required></textarea>
+            <button type="button" class="btn-send" id="send-btn" disabled onclick="handleSendMessage()">ЖІБЕРУ</button>
+        </form>
     </div>
 
-    <div id="bot-modal">
-        <div class="bot-header">Qodekz AI Assistant <span onclick="toggleBot()" style="float:right; cursor:pointer;">×</span></div>
-        <div class="bot-body" id="bot-messages">Сәлем! Мен Qodekz ақылды ботымын. Сізге қандай көмек керек?</div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-    <script>
-        // Loader Script
-        window.addEventListener('load', () => {
-            const status = document.getElementById('status-text');
-            setTimeout(() => { status.innerText = "SECURITY CHECK PASSED..."; }, 1000);
-            setTimeout(() => { status.innerText = "LOADING INTERFACE..."; }, 2000);
-            setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 3000);
+        // СЕНІҢ КОНФИГУРАЦИЯҢ
+        const firebaseConfig = {
+            apiKey: "AIzaSyA1Cqd_-ZgmkEzd2zeZYHWjjHkKVoZBZa4",
+            authDomain: "qodekz-studio.firebaseapp.com",
+            projectId: "qodekz-studio",
+            storageBucket: "qodekz-studio.firebasestorage.app",
+            messagingSenderId: "712995595606",
+            appId: "1:712995595606:web:b551c0a8fc2e1d461422f7",
+            measurementId: "G-ZVP93DTM24"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const provider = new GoogleAuthProvider();
+
+        // 1. Google-мен кіру
+        window.signInWithGoogle = () => {
+            signInWithPopup(auth, provider).catch(err => console.error("Қате:", err));
+        };
+
+        // 2. Шығу
+        window.signOutUser = () => signOut(auth);
+
+        // 3. Пайдаланушы күйін бақылау
+        onAuthStateChanged(auth, (user) => {
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userImg = document.getElementById('user-img');
+            const userName = document.getElementById('user-name');
+            const statusText = document.getElementById('auth-status');
+            const sendBtn = document.getElementById('send-btn');
+
+            if (user) {
+                // Пайдаланушы кіргенде
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+                userImg.src = user.photoURL;
+                userImg.style.display = 'block';
+                userName.innerText = user.displayName;
+                userName.style.display = 'block';
+                statusText.innerText = "Авторизация сәтті: " + user.email;
+                statusText.style.color = "#00ff88";
+                sendBtn.disabled = false;
+            } else {
+                // Пайдаланушы шыққанда
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+                userImg.style.display = 'none';
+                userName.style.display = 'none';
+                statusText.innerText = "Хат жіберу үшін жүйеге кіріңіз";
+                statusText.style.color = "#ff4444";
+                sendBtn.disabled = true;
+            }
         });
 
-        // Bot Toggle
-        function toggleBot() {
-            const modal = document.getElementById('bot-modal');
-            modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
-        }
+        // 4. Хатты базаға жіберу (ЕҢ ҚАУІПСІЗ ЖОЛЫ)
+        window.handleSendMessage = () => {
+            const user = auth.currentUser;
+            const subject = document.getElementById('msg-subject').value;
+            const body = document.getElementById('msg-body').value;
+
+            if (user && subject && body) {
+                const messagesRef = ref(db, 'secure_messages/' + user.uid);
+                push(messagesRef, {
+                    sender_name: user.displayName,
+                    sender_email: user.email,
+                    subject: subject,
+                    message: body,
+                    timestamp: new Date().toISOString(),
+                    security_check: "VERIFIED_BY_GOOGLE"
+                }).then(() => {
+                    alert("Хат қабылданды! Админ жақын арада жауап береді.");
+                    document.getElementById('contact-form').reset();
+                });
+            }
+        };
     </script>
 </body>
 </html>
