@@ -1,210 +1,151 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QODEKZ | Secure Studio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --neon: #00f2ff;
-            --bg: #05070a;
-            --glass: rgba(255, 255, 255, 0.03);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QODEKZ</title>
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            overflow-x: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 
-        /* Кәсіби Auth панелі */
-        .auth-bar {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: var(--glass);
-            padding: 8px 15px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-        }
+<style>
+:root{
+--neon:#00f2ff;
+--bg:#05070a;
+}
 
-        .user-photo {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            border: 2px solid var(--neon);
-            display: none;
-        }
+body{
+margin:0;
+background:var(--bg);
+color:white;
+font-family:'Montserrat';
+}
 
-        .btn-auth {
-            background: none;
-            border: 1px solid var(--neon);
-            color: var(--neon);
-            padding: 8px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Orbitron';
-            font-size: 0.7rem;
-            transition: 0.3s;
-        }
+/* LOGIN */
+.login-btn{
+position:fixed;
+top:20px;
+right:20px;
+padding:12px 30px;
+border-radius:40px;
+border:2px solid var(--neon);
+color:var(--neon);
+background:transparent;
+font-family:'Orbitron';
+cursor:pointer;
+box-shadow:0 0 10px var(--neon), inset 0 0 10px var(--neon);
+}
 
-        .btn-auth:hover {
-            background: var(--neon);
-            color: black;
-            box-shadow: 0 0 15px var(--neon);
-        }
+/* GRID */
+.container{padding:40px; max-width:900px; margin:auto;}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
 
-        /* Хат жіберу формасының жаңа дизайны */
-        .contact-section {
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 40px;
-            background: var(--glass);
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-        }
+/* CARDS */
+.btn-card{
+background:rgba(255,255,255,0.03);
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+cursor:pointer;
+transition:0.3s;
+}
+.btn-card:hover{
+border-color:var(--neon);
+box-shadow:0 0 20px rgba(0,242,255,0.2);
+transform:translateY(-5px);
+}
+.btn-card b{color:var(--neon);}
 
-        input, textarea {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(0, 242, 255, 0.1);
-            color: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 10px;
-            outline: none;
-            transition: 0.3s;
-        }
+/* POPUP */
+.popup{
+position:fixed;
+top:-100px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+border:1px solid var(--neon);
+padding:15px 30px;
+border-radius:10px;
+color:var(--neon);
+font-family:'Orbitron';
+transition:0.5s;
+}
+.popup.show{top:20px;}
 
-        input:focus { border-color: var(--neon); }
-
-        .btn-send {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(90deg, #00f2ff, #0072ff);
-            border: none;
-            color: black;
-            font-weight: bold;
-            font-family: 'Orbitron';
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+</style>
 </head>
+
 <body>
 
-    <div class="auth-bar" id="auth-panel">
-        <img id="user-img" class="user-photo" src="" alt="User">
-        <span id="user-name" style="font-size: 0.8rem; display: none;"></span>
-        <button class="btn-auth" id="login-btn" onclick="signInWithGoogle()">LOG IN</button>
-        <button class="btn-auth" id="logout-btn" style="display: none;" onclick="signOutUser()">EXIT</button>
-    </div>
+<button class="login-btn" onclick="login()">LOG IN</button>
 
-    <div class="contact-section">
-        <h2 style="font-family: 'Orbitron'; color: var(--neon);">SECURE MESSAGE</h2>
-        <p id="auth-status" style="font-size: 0.8rem; color: #ff4444;">Жүйеге кіріңіз...</p>
-        
-        <form id="contact-form">
-            <input type="text" id="msg-subject" placeholder="Тақырып (мысалы: Инвестиция)" required>
-            <textarea id="msg-body" placeholder="Сұрағыңызды қалдырыңыз..." rows="5" required></textarea>
-            <button type="button" class="btn-send" id="send-btn" disabled onclick="handleSendMessage()">ЖІБЕРУ</button>
-        </form>
-    </div>
+<div id="popup" class="popup">Тіркелу керек!</div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+<div class="container">
 
-        // СЕНІҢ КОНФИГУРАЦИЯҢ
-        const firebaseConfig = {
-            apiKey: "AIzaSyA1Cqd_-ZgmkEzd2zeZYHWjjHkKVoZBZa4",
-            authDomain: "qodekz-studio.firebaseapp.com",
-            projectId: "qodekz-studio",
-            storageBucket: "qodekz-studio.firebasestorage.app",
-            messagingSenderId: "712995595606",
-            appId: "1:712995595606:web:b551c0a8fc2e1d461422f7",
-            measurementId: "G-ZVP93DTM24"
-        };
+<h2>QODEKZ SYSTEM</h2>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-        const provider = new GoogleAuthProvider();
+<div class="grid">
 
-        // 1. Google-мен кіру
-        window.signInWithGoogle = () => {
-            signInWithPopup(auth, provider).catch(err => console.error("Қате:", err));
-        };
+<div class="btn-card" onclick="goServices()">
+<b>Сайт / Бот / App</b>
+</div>
 
-        // 2. Шығу
-        window.signOutUser = () => signOut(auth);
+<div class="btn-card" onclick="goInvest()">
+<b>Инвестиция</b>
+</div>
 
-        // 3. Пайдаланушы күйін бақылау
-        onAuthStateChanged(auth, (user) => {
-            const loginBtn = document.getElementById('login-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const userImg = document.getElementById('user-img');
-            const userName = document.getElementById('user-name');
-            const statusText = document.getElementById('auth-status');
-            const sendBtn = document.getElementById('send-btn');
+<div class="btn-card" onclick="goAbout()">
+<b>Біз туралы</b>
+</div>
 
-            if (user) {
-                // Пайдаланушы кіргенде
-                loginBtn.style.display = 'none';
-                logoutBtn.style.display = 'block';
-                userImg.src = user.photoURL;
-                userImg.style.display = 'block';
-                userName.innerText = user.displayName;
-                userName.style.display = 'block';
-                statusText.innerText = "Авторизация сәтті: " + user.email;
-                statusText.style.color = "#00ff88";
-                sendBtn.disabled = false;
-            } else {
-                // Пайдаланушы шыққанда
-                loginBtn.style.display = 'block';
-                logoutBtn.style.display = 'none';
-                userImg.style.display = 'none';
-                userName.style.display = 'none';
-                statusText.innerText = "Хат жіберу үшін жүйеге кіріңіз";
-                statusText.style.color = "#ff4444";
-                sendBtn.disabled = true;
-            }
-        });
+<div class="btn-card" onclick="sendMessage()">
+<b>Админге жазу</b>
+</div>
 
-        // 4. Хатты базаға жіберу (ЕҢ ҚАУІПСІЗ ЖОЛЫ)
-        window.handleSendMessage = () => {
-            const user = auth.currentUser;
-            const subject = document.getElementById('msg-subject').value;
-            const body = document.getElementById('msg-body').value;
+</div>
+</div>
 
-            if (user && subject && body) {
-                const messagesRef = ref(db, 'secure_messages/' + user.uid);
-                push(messagesRef, {
-                    sender_name: user.displayName,
-                    sender_email: user.email,
-                    subject: subject,
-                    message: body,
-                    timestamp: new Date().toISOString(),
-                    security_check: "VERIFIED_BY_GOOGLE"
-                }).then(() => {
-                    alert("Хат қабылданды! Админ жақын арада жауап береді.");
-                    document.getElementById('contact-form').reset();
-                });
-            }
-        };
-    </script>
+<script>
+
+let isLoggedIn = localStorage.getItem("login") === "true";
+
+function login(){
+isLoggedIn = true;
+localStorage.setItem("login","true");
+alert("Кірдің ✅");
+}
+
+function goServices(){
+window.location.href="services.html";
+}
+
+function goInvest(){
+window.location.href="invest.html";
+}
+
+function goAbout(){
+window.location.href="about.html";
+}
+
+function sendMessage(){
+if(!isLoggedIn){
+showPopup();
+return;
+}
+alert("Хабарлама жіберу функциясын кейін қосамыз");
+}
+
+function showPopup(){
+const popup = document.getElementById("popup");
+popup.classList.add("show");
+
+setTimeout(()=>{
+popup.classList.remove("show");
+},3000);
+}
+
+</script>
+
 </body>
 </html>
-
