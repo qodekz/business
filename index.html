@@ -1,151 +1,170 @@
 <!DOCTYPE html>
 <html lang="kk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QODEKZ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QODEKZ | SECURE SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00f2ff; --bg: #0d1117; --card: #161b22; --border: #30363d; --red: #f85149; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; }
+        
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 5%; background: rgba(13,21,30,0.9); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .nav-links a { color: #8b949e; text-decoration: none; margin-right: 20px; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .nav-links a:hover { color: var(--neon); }
+        
+        .login-btn { 
+            padding: 8px 20px; border: 1px solid var(--neon); background: transparent; 
+            color: var(--neon); font-family: 'Orbitron'; cursor: pointer; border-radius: 6px; font-size: 0.8rem;
+        }
+        .login-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+        .banner { background: rgba(0,242,255,0.05); color: var(--neon); text-align: center; padding: 10px; font-size: 0.8rem; border-bottom: 1px solid var(--neon); }
 
-<style>
-:root{
---neon:#00f2ff;
---bg:#05070a;
-}
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        
+        .card { 
+            background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid var(--border); 
+            transition: 0.4s; cursor: pointer; text-align: center;
+        }
+        .card:hover { border-color: var(--neon); transform: translateY(-5px); }
+        .card b { display: block; font-family: 'Orbitron'; color: var(--neon); margin-bottom: 8px; font-size: 1.1rem; }
 
-body{
-margin:0;
-background:var(--bg);
-color:white;
-font-family:'Montserrat';
-}
-
-/* LOGIN */
-.login-btn{
-position:fixed;
-top:20px;
-right:20px;
-padding:12px 30px;
-border-radius:40px;
-border:2px solid var(--neon);
-color:var(--neon);
-background:transparent;
-font-family:'Orbitron';
-cursor:pointer;
-box-shadow:0 0 10px var(--neon), inset 0 0 10px var(--neon);
-}
-
-/* GRID */
-.container{padding:40px; max-width:900px; margin:auto;}
-.grid{display:grid; grid-template-columns:1fr 1fr; gap:15px;}
-@media(max-width:600px){.grid{grid-template-columns:1fr;}}
-
-/* CARDS */
-.btn-card{
-background:rgba(255,255,255,0.03);
-padding:20px;
-border-radius:15px;
-border:1px solid rgba(255,255,255,0.1);
-cursor:pointer;
-transition:0.3s;
-}
-.btn-card:hover{
-border-color:var(--neon);
-box-shadow:0 0 20px rgba(0,242,255,0.2);
-transform:translateY(-5px);
-}
-.btn-card b{color:var(--neon);}
-
-/* POPUP */
-.popup{
-position:fixed;
-top:-100px;
-left:50%;
-transform:translateX(-50%);
-background:#111;
-border:1px solid var(--neon);
-padding:15px 30px;
-border-radius:10px;
-color:var(--neon);
-font-family:'Orbitron';
-transition:0.5s;
-}
-.popup.show{top:20px;}
-
-</style>
+        /* Admin Panel Styles */
+        #admin-panel { display: none; margin-top: 40px; border-top: 2px solid var(--red); padding-top: 20px; }
+        .msg-item { border: 1px solid var(--border); padding: 15px; margin-bottom: 12px; border-radius: 10px; background: rgba(255,255,255,0.02); }
+        
+        /* Message Form */
+        .msg-box { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 12px; max-width: 500px; margin: auto; }
+        input, textarea { width: 100%; background: #0d1117; border: 1px solid var(--border); color: white; padding: 12px; margin: 10px 0; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        
+        @media (max-width: 600px) { .nav-links { display: none; } .grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
-
 <body>
 
-<button class="login-btn" onclick="login()">LOG IN</button>
+<div id="banner" class="banner">SECURITY ALERT: ЖҮЙЕГЕ КІРУ ҚАЖЕТ</div>
 
-<div id="popup" class="popup">Тіркелу керек!</div>
+<header>
+    <div style="font-family:'Orbitron'; font-weight:700; color:var(--neon); letter-spacing:1px;">QODEKZ</div>
+    <div class="nav-links">
+        <a href="services.html">SERVICES</a>
+        <a href="invest.html">INVEST</a>
+        <a href="about.html">ABOUT</a>
+    </div>
+    <div id="auth-ui">
+        <button class="login-btn" onclick="promptLogin()">SIGN IN</button>
+    </div>
+</header>
 
 <div class="container">
+    <div class="grid">
+        <div class="card" onclick="location.href='services.html'"><b>SERVICES</b><p>Development & Security</p></div>
+        <div class="card" onclick="location.href='invest.html'"><b>INVEST</b><p>Financial Assets</p></div>
+        <div class="card" onclick="location.href='about.html'"><b>ABOUT</b><p>System Intel</p></div>
+    </div>
 
-<h2>QODEKZ SYSTEM</h2>
+    <div class="msg-box">
+        <h3 style="font-family:'Orbitron'; color:var(--neon); margin-top:0;">SECURE MSG</h3>
+        <input type="text" id="msg-title" placeholder="Тақырыбы">
+        <textarea id="msg-body" rows="4" placeholder="Хабарламаңыз..."></textarea>
+        <button class="login-btn" style="width:100%" onclick="sendMsg()">ЖІБЕРУ</button>
+    </div>
 
-<div class="grid">
-
-<div class="btn-card" onclick="goServices()">
-<b>Сайт / Бот / App</b>
-</div>
-
-<div class="btn-card" onclick="goInvest()">
-<b>Инвестиция</b>
-</div>
-
-<div class="btn-card" onclick="goAbout()">
-<b>Біз туралы</b>
-</div>
-
-<div class="btn-card" onclick="sendMessage()">
-<b>Админге жазу</b>
-</div>
-
-</div>
+    <div id="admin-panel">
+        <h2 style="color:var(--red); font-family:'Orbitron';">ADMIN_CONTROL_CENTER</h2>
+        <div id="messages-list"></div>
+    </div>
 </div>
 
 <script>
+    let user = JSON.parse(localStorage.getItem("qodekz_user")) || null;
+    let lastSend = 0;
 
-let isLoggedIn = localStorage.getItem("login") === "true";
+    function updateUI() {
+        const banner = document.getElementById("banner");
+        const adminPanel = document.getElementById("admin-panel");
+        const authUI = document.getElementById("auth-ui");
 
-function login(){
-isLoggedIn = true;
-localStorage.setItem("login","true");
-alert("Кірдің ✅");
-}
+        if(user) {
+            banner.style.display = "none";
+            authUI.innerHTML = `<span style="color:var(--neon); font-size:0.8rem;">${user.email}</span> <button onclick="logout()" style="margin-left:10px; background:none; border:none; color:var(--red); cursor:pointer; font-weight:bold;">EXIT</button>`;
+            
+            if(user.role === "admin") {
+                adminPanel.style.display = "block";
+                loadMessages();
+            }
+        }
+    }
 
-function goServices(){
-window.location.href="services.html";
-}
+    function promptLogin() {
+        let email = prompt("Email:");
+        let pass = prompt("Password:");
 
-function goInvest(){
-window.location.href="invest.html";
-}
+        if(email === "qodekz@gmail.com" && pass === "12345") {
+            user = { email: email, role: "admin" };
+        } else if(email) {
+            user = { email: email, role: "user" };
+        } else {
+            return;
+        }
 
-function goAbout(){
-window.location.href="about.html";
-}
+        localStorage.setItem("qodekz_user", JSON.stringify(user));
+        updateUI();
+        location.reload();
+    }
 
-function sendMessage(){
-if(!isLoggedIn){
-showPopup();
-return;
-}
-alert("Хабарлама жіберу функциясын кейін қосамыз");
-}
+    function logout() {
+        localStorage.removeItem("qodekz_user");
+        location.reload();
+    }
 
-function showPopup(){
-const popup = document.getElementById("popup");
-popup.classList.add("show");
+    function sendMsg() {
+        if(!user) return alert("Қате: Алдымен жүйеге кіріңіз!");
+        
+        if(Date.now() - lastSend < 5000) return alert("Анти-спам: 5 секунд күтіңіз!");
 
-setTimeout(()=>{
-popup.classList.remove("show");
-},3000);
-}
+        let title = document.getElementById("msg-title").value.trim();
+        let body = document.getElementById("msg-body").value.trim();
 
+        if(!title || !body) return alert("Қате: Барлық өрісті толтырыңыз!");
+
+        lastSend = Date.now();
+        let msgs = JSON.parse(localStorage.getItem("messages")) || [];
+        msgs.push({
+            from: user.email,
+            title: title,
+            body: body,
+            time: new Date().toLocaleString()
+        });
+
+        localStorage.setItem("messages", JSON.stringify(msgs));
+        alert("Хабарлама сәтті жіберілді ✅");
+        document.getElementById("msg-title").value = "";
+        document.getElementById("msg-body").value = "";
+        if(user.role === "admin") loadMessages();
+    }
+
+    function loadMessages() {
+        let msgs = JSON.parse(localStorage.getItem("messages")) || [];
+        let html = msgs.reverse().map(m => `
+            <div class="msg-item">
+                <b style="color:var(--neon)">${m.from}</b>
+                <div style="margin:5px 0; font-weight:600;">${m.title}</div>
+                <div style="opacity:0.8; font-size:0.9rem;">${m.body}</div>
+                <div style="font-size:0.7rem; color:#8b949e; margin-top:10px;">${m.time}</div>
+            </div>
+        `).join('');
+        document.getElementById("messages-list").innerHTML = html || "Хаттар табылған жоқ.";
+    }
+
+    updateUI();
 </script>
-
 </body>
 </html>
+
