@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QODEKZ | SECURE SYSTEM</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
     <style>
         :root { --neon: #00f2ff; --bg: #0d1117; --card: #161b22; --border: #30363d; --red: #f85149; }
         body { margin: 0; background: var(--bg); color: white; font-family: 'Montserrat', sans-serif; }
-        
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
             padding: 15px 5%; background: rgba(13,21,30,0.9); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 100;
         }
         .nav-links a { color: #8b949e; text-decoration: none; margin-right: 20px; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
         .nav-links a:hover { color: var(--neon); }
-        
-        .login-btn { 
-            padding: 8px 20px; border: 1px solid var(--neon); background: transparent; 
+
+        .login-btn {
+            padding: 8px 20px; border: 1px solid var(--neon); background: transparent;
             color: var(--neon); font-family: 'Orbitron'; cursor: pointer; border-radius: 6px; font-size: 0.8rem;
         }
         .login-btn:hover { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
@@ -27,22 +31,20 @@
 
         .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        
-        .card { 
-            background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid var(--border); 
+
+        .card {
+            background: var(--card); padding: 25px; border-radius: 12px; border: 1px solid var(--border);
             transition: 0.4s; cursor: pointer; text-align: center;
         }
         .card:hover { border-color: var(--neon); transform: translateY(-5px); }
         .card b { display: block; font-family: 'Orbitron'; color: var(--neon); margin-bottom: 8px; font-size: 1.1rem; }
 
-        /* Admin Panel Styles */
         #admin-panel { display: none; margin-top: 40px; border-top: 2px solid var(--red); padding-top: 20px; }
         .msg-item { border: 1px solid var(--border); padding: 15px; margin-bottom: 12px; border-radius: 10px; background: rgba(255,255,255,0.02); }
-        
-        /* Message Form */
+
         .msg-box { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 12px; max-width: 500px; margin: auto; }
         input, textarea { width: 100%; background: #0d1117; border: 1px solid var(--border); color: white; padding: 12px; margin: 10px 0; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
-        
+
         @media (max-width: 600px) { .nav-links { display: none; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -83,6 +85,22 @@
 </div>
 
 <script>
+    // 2. Firebase Конфигурациясы
+    const firebaseConfig = {
+        apiKey: "AIzaSyA1Cqd_-ZgmkEzd2zeZYHWjjHkKVoZBZa4",
+        authDomain: "qodekz-studio.firebaseapp.com",
+        databaseURL: "https://qodekz-studio-default-rtdb.firebaseio.com",
+        projectId: "qodekz-studio",
+        storageBucket: "qodekz-studio.firebasestorage.app",
+        messagingSenderId: "712995595606",
+        appId: "1:712995595606:web:b551c0a8fc2e1d461422f7",
+        measurementId: "G-ZVP93DTM24"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
     let user = JSON.parse(localStorage.getItem("qodekz_user")) || null;
     let lastSend = 0;
 
@@ -94,7 +112,7 @@
         if(user) {
             banner.style.display = "none";
             authUI.innerHTML = `<span style="color:var(--neon); font-size:0.8rem;">${user.email}</span> <button onclick="logout()" style="margin-left:10px; background:none; border:none; color:var(--red); cursor:pointer; font-weight:bold;">EXIT</button>`;
-            
+
             if(user.role === "admin") {
                 adminPanel.style.display = "block";
                 loadMessages();
@@ -102,31 +120,39 @@
         }
     }
 
+    // 3. Жаңартылған Google Auth Функциясы
     function promptLogin() {
-        let email = prompt("Email:");
-        let pass = prompt("Password:");
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const firebaseUser = result.user;
+                // Админ екенін тексеру
+                const role = (firebaseUser.email === "qodekz@gmail.com") ? "admin" : "user";
+                
+                user = { 
+                    email: firebaseUser.email, 
+                    role: role, 
+                    name: firebaseUser.displayName 
+                };
 
-        if(email === "qodekz@gmail.com" && pass === "12345") {
-            user = { email: email, role: "admin" };
-        } else if(email) {
-            user = { email: email, role: "user" };
-        } else {
-            return;
-        }
-
-        localStorage.setItem("qodekz_user", JSON.stringify(user));
-        updateUI();
-        location.reload();
+                localStorage.setItem("qodekz_user", JSON.stringify(user));
+                updateUI();
+                location.reload();
+            })
+            .catch((error) => {
+                console.error("Auth қатесі:", error.message);
+                alert("Кіру сәтсіз аяқталды!");
+            });
     }
 
     function logout() {
-        localStorage.removeItem("qodekz_user");
-        location.reload();
+        auth.signOut().then(() => {
+            localStorage.removeItem("qodekz_user");
+            location.reload();
+        });
     }
 
     function sendMsg() {
         if(!user) return alert("Қате: Алдымен жүйеге кіріңіз!");
-        
         if(Date.now() - lastSend < 5000) return alert("Анти-спам: 5 секунд күтіңіз!");
 
         let title = document.getElementById("msg-title").value.trim();
